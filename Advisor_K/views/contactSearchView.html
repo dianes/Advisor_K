@@ -1,0 +1,46 @@
+<div data-role="view" id="contactSearchView" data-title="Contact Search">
+	<header data-role="header">
+		<div data-role="navbar">
+            <a data-role="backbutton" data-align="left">Back</a>
+            <span data-role="view-title"></span>
+		</div>
+	</header>
+    <div id="contactSearchViewContent" data-role="content">
+        <div id="contactSearchCriteria">
+            <p>
+                <label style="display: inline-block;">Search For:</label>
+                <input type="radio" value="client"   name="srchFor" checked />Client
+                <input type="radio" value="prospect" name="srchFor"  />Prospect
+            </p>
+            <p>
+                <label style="display: inline-block;">Search By:</label><br/>
+                <input type="radio" value="srchByDemo"   name="srchBy" checked />Demographic Information<br/>
+                <input type="radio" value="srchByAcctno" name="srchBy"  />Account #<br/>
+                <input type="radio" value="srchByRepCode" name="srchBy"  />Rep Code
+            </p>
+            <p>
+                <label for="txtLname" style="display: inline-block;">Last Name:</label>
+                <input type="text" id="txtLname" value="" /><br/>
+                <label for="txtFname" style="display: inline-block;">First Name:</label>
+                <input type="text" id="txtFname" value="" /><br/>           
+                <label for="txtCity" style="display: inline-block;">City:</label>
+                <input type="text" id="txtCity" value="" /><br/>
+                <label for="txtState" style="display: inline-block;">State:</label>
+                <input type="text" id="txtState" value="" /><br/>
+                <label for="txtZip" style="display: inline-block;">Zip:</label>
+                <input type="text" id="txtZip" value="" /><br/>
+            </p>
+            <p> <div class="buttonArea">            
+                    <a id="btnSearch" data-role="button" data-click="sayHello">Search</a>
+                </div>
+            </p>
+        </div>
+		<!-- List of contacts -->
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                <!--<ul id="cardsList" data-role="listview" data-bind="source: cards" data-template="cardsListTemplate">
+                </ul>-->
+            </li>
+        </ul>
+	</div>
+</div>

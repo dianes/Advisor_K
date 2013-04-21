@@ -8,6 +8,8 @@ body
 #geoLocationContainer,
 #helloWorldInput,
 #helloWorldText
+#contactSearchCriteria
+#btnSearch
 {
     text-align: center;
 }
