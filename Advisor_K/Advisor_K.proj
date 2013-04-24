@@ -66,6 +66,7 @@
     <Content Include="kendo\styles\images\KendoUI.woff" />
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
     <Content Include="scripts\hello-world.js" />
+    <Content Include="scripts\main.js" />
     <Content Include="styles\main.css" />
     <Content Include="cordova.ios.js">
       <Platform>iOS</Platform>
@@ -76,6 +77,7 @@
       <TargetName>cordova.js</TargetName>
     </Content>
     <Content Include="views\contactSearchView.html" />
+    <Content Include="views\hhSnapshotView.html" />
     <Content Include="views\modelSearchView.html" />
     <Content Include="views\recentContactsView.html" />
     <Content Include="views\recentModelsView.html" />
