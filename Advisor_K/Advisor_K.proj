@@ -66,7 +66,13 @@
     <Content Include="kendo\styles\images\KendoUI.woff" />
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
     <Content Include="scripts\hello-world.js" />
+    <Content Include="scripts\jquery.mobile-1.2.0.min.js" />
+    <Content Include="scripts\kendo.all.min.js" />
+    <Content Include="scripts\kendo.grid.min.js" />
     <Content Include="scripts\main.js" />
+    <Content Include="styles\jquery.mobile-1.2.0.min.css" />
+    <Content Include="styles\kendo.common.min.css" />
+    <Content Include="styles\kendo.default.min.css" />
     <Content Include="styles\main.css" />
     <Content Include="cordova.ios.js">
       <Platform>iOS</Platform>

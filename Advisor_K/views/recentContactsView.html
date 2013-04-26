@@ -1,4 +1,4 @@
-<div data-role="view" id="recentContactsView" data-title="Recent Contacts" data-show="getContactList">
+<div data-role="view" id="recentContactsView" data-title="Recent Contacts" data-init="getContactListGrid">
 	<header data-role="header">
 		<div data-role="navbar">
             <a id="btnContactSearch" data-role="button" href="views/contactSearchView.html" 
@@ -7,49 +7,137 @@
 		</div>
 	</header>
     <div id="recentcontactViewContent" data-role="content">		
-        <ul data-role="listview" id="contactlist" data-style="inset" ></ul>   
-    </div>	
+           <!--<ul data-role="listview" id="contactlist" data-style="inset" ></ul>   -->       
+         <!--<div id="grid"></div>-->
+            <table id="contactListGrid">              
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Phone
+                        </th>
+                        <th>
+                            City
+                        </th>                       
+                        <th>
+                            State
+                        </th>
+                        <th>
+                            Zip
+                        </th>
+                        <th>
+                            Last Accessed
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="8"></td>
+                    </tr>
+                </tbody>
+            </table>       
+            
+    </div>    
  </div>
-   
-    <script type="text/x-kendo-template" id="contact-list-template">
-            <!--<a href="">hello</a>-->
-            <!--<a href="\#hhSnapshotView?hhId=\#= myName \#"> \#= myName </a>-->
-            <a data-role="detailbutton" data-style="rowdelete" data-click="removeSubReddit" data-id="${id}" class="delete"></a>
-    </script>
 
+<script id="contactListRowTemplate" type="text/x-kendo-template">
+        <tr>            
+                <td><a href="\#hhSnapshotView?hhId=#: hh_id #">#: lname #, #: fname #</a></td>            
+                <td>#: type #</td>
+                <td>#: phone #</td>
+                <td>#: city #</td>
+                <td>#: state #</td>
+                <td>#: zip #</td>
+                <td>#: access_date #</td>
+                <td></td>
+                
+       </tr>
+</script>
+   
+ 
 
 
 <div data-role="view" id="hhSnapshotView" data-title="Household Snapshot" data-align="left" data-show="getHHSnapshot" >
 	<header data-role="header">
 		<div data-role="navbar">
-            <a data-role="backbutton" data-align="left">Back</a>
+            <a data-role="backbutton" data-align="left" href="#recentContactsView">Back</a>
             <span data-role="view-title"></span>
 		</div>
 	</header>
     
     <div id="hhSnapshotViewContent" data-role="content">
-        <ul data-role="listview" data-style="inset" data-type="group">
-            <li>
-                Household Members
-                <ul data-role="listview" id="hhlist" data-style="inset"></ul>
-            </li>
-     
-            <li>
-                Accounts
-                <ul data-role="listview" data-style="inset">  
-                    <li>
-                        <h3>Internal Accounts</h3>
-                        <ul data-role="listview" id="intAccts"></ul>                          
-                    </li>
-                    <li>
-                         <h3>External Accounts</h3>                             
-                         <ul data-role="listview" id="extAccts"></ul>
-                    </li>
-                </ul>
-             </li>
-        </ul>
+        <!--<div id="grid"></div>-->
+        
+        <div>
+            <ul data-role="listview" data-style="inset" data-type="group">
+                <li>
+                    Household Members
+                    <ul data-role="listview" data-style="inset">
+                        <li>
+                            <div id="hhListGrid"></div>
+                        </li>
+                    </ul>
+                </li>
+         
+                <li>
+                    Accounts
+                    <ul data-role="listview" data-style="inset">  
+                        <li>
+                            <h3>Internal Accounts</h3>
+                            <div id="intAcctGrid"></div>                      
+                        </li>
+                        <li>
+                             <h3>External Accounts</h3>                             
+                             <div id="extAcctGrid"></div>
+                        </li>
+                    </ul>
+                    
+                 </li>
+            </ul>
+        </div>
+        
+        
+        <!--<div>
+            <ul data-role="listview" data-style="inset" data-type="group">
+                <li>
+                    Household Members
+                    <ul data-role="listview" id="hhlist" data-style="inset"></ul>
+                </li>
+         
+                <li>
+                    Accounts
+                    <ul data-role="listview" data-style="inset">  
+                        <li>
+                            <h3>Internal Accounts</h3>
+                            <ul data-role="listview" id="intAccts"></ul>                          
+                        </li>
+                        <li>
+                             <h3>External Accounts</h3>                             
+                             <ul data-role="listview" id="extAccts"></ul>
+                        </li>
+                    </ul>
+                    
+                 </li>
+            </ul>
+        </div>-->
+        
 	</div>
 </div>
+
+
+<script type="text/x-kendo-template" id="account">
+            <!--<a href="">hello</a>-->
+            <!--<a href="\#hhSnapshotView?hhId=\#= myName \#"> \#= myName </a>-->
+            <a data-role="detailbutton" data-style="rowdelete" data-click="removeSubReddit" data-id="${id}" class="delete"></a>
+    </script>
 
     
 

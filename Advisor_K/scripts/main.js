@@ -1,6 +1,54 @@
 
-function getContactListaaa(){
-    getData(onResult);
+function getContactListGrid()
+{
+   // debugger;
+   // alert("getContactListGrid");
+    var instId=6083;
+    var bId=10408149;    
+    var param = '{InstID:' + instId + ', BrokerID:' + bId + '}'; 
+    $.ajax({ 
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://r-sund2/ContactService/Service1.asmx/GetRecentContacts",       
+        data: param,
+        dataType: "json",
+        success: function(dat){       
+          //  alert("contactlistgrid success");
+            var data= JSON.parse(dat.d);
+          //         alert("data="+data);    
+       /*     alert('success data.d:' + data.d.List);
+            var datasrc = data.d.List;
+            
+            $("#contactlist").kendoMobileListView({
+			dataSource: data.d.List,
+			template: $("#contact-list-template").html(),
+            style: "inset"               
+             
+		});*/            
+        
+            
+           /* $.each(data.List, function(key, val){
+                var str = val.lname + "," + val.fname;              
+                var hhId = val.hh_id;                
+                var style= 'class="km-listview-link" data-role="listview-link"';               
+                $('<li><a href="\#hhSnapshotView?hhId='+ hhId + '"' + style + '>' + str + '</a></li>')
+                    .appendTo($('#contactlist')); 
+            }); */
+        
+            $("#contactListGrid").kendoGrid({
+                        dataSource: data.List,
+                        rowTemplate: kendo.template($("#contactListRowTemplate").html()),
+                        
+                    });
+           
+            
+            
+            },
+        error: function(data){
+           // alert('contactlistgrid failure:' + data.status + ':' + data.responseText);
+            }
+        });          
+    
 }
 
 function getContactListsss(){
@@ -39,8 +87,10 @@ function getContactList() {
        // data: "{'InstID': 6083, 'BrokerID': 10408149}",
         data: param,
         dataType: "json",
-        success: function(data){
-                       
+        success: function(dat){
+         //   debugger;
+            var data= JSON.parse(dat.d);
+          //         alert("data="+data);    
        /*     alert('success data.d:' + data.d.List);
             var datasrc = data.d.List;
             
@@ -52,8 +102,9 @@ function getContactList() {
 		});*/            
         
             
-            $.each(data.d.List, function(key, val){
+            $.each(data.List, function(key, val){
                 var str = val.lname + "," + val.fname;
+              //  alert("str=" + str);
                 var hhId = val.hh_id;                
                 var style= 'class="km-listview-link" data-role="listview-link"';
                // $('<li/>', {text: str}).appendTo($('#contactlist')); 
@@ -94,6 +145,7 @@ function getContactList() {
 
 
 function getHHSnapshot(e){
+  //  alert("getHHSnapshot");
     var hhId = e.view.params.hhId;
     getHHMembers(hhId);
     getHHAccountList(hhId);
@@ -117,20 +169,39 @@ function getHHMembers(hhId) {
        // data: "{'InstID': 6083, 'BrokerID': 10408149, 'ModuleID': 120, 'HHID': 6829146}",
         data: param,
         dataType: "json",
-        success: function(data){
+        success: function(dat){
+            var data= JSON.parse(dat.d);
+            
+            $("#hhListGrid").empty().kendoGrid({
+                     dataSource: data.List,
+                     selectable: "multiple cell",                       
+                        sortable: true,                 
+                     columns: [
+                     {
+                         field: "name",
+                         title: "Name"                         
+                     },
+                     {    
+                         field: "type",
+                         title: "Household Relationship"                         
+                     }
+                 ]
+               });
+            
+            
            // debugger;
             var output = "";
-            $.each(data.d.List, function(key, val){
+            $.each(data.List, function(key, val){
                 var name = val.name;
                 var type = val.type;
                 output+='<li>' + name + "    " + type + "</li>";
-              //  alert("output="+output);                
+               // alert("output="+output);                
              });
             
             $('#hhlist').empty().append(output);
-          // alert('success:' + data.d);
+          
            
-            //getHHAccounts(hhId);
+            
 
         },
         error: function(data){
@@ -140,7 +211,7 @@ function getHHMembers(hhId) {
     }
     
  function getHHAccountList(hhId){
-     
+   //  var hhId=6829146;
     var instId=6083;
     var bId=10408149;
     var modId = 120;
@@ -154,10 +225,120 @@ function getHHMembers(hhId) {
        // data: "{'InstID': 6083, 'BrokerID': 10408149, 'ModuleID': 120, 'HHID': 6829146}",
         data: param,
         dataType: "json",
-        success: function(data){ 
+        success: function(dat){ 
+           // alert("getHHAccountList success");
+            var data= JSON.parse(dat.d);
+            
+            //create datasource
+          // var dataSource = new kendo.data.DataSource({data: data.BusinessObjects});
+            
+         // debugger;  
+          //  var raw = dataSource.data();
+            var length = data.BusinessObjects.length;
+            var intDataSource = [];
+            var extDataSource = [];
+            var item, i;
+            var intIndex = 0;
+            var extIndex = 0;
+            for(i=0;i<length;i++){
+                item = data.BusinessObjects[i];
+                if(item.InternalValue == true){
+                    intDataSource[intIndex] = item;
+                    intIndex++;
+                    }
+                else{
+                    extDataSource[extIndex] = item;
+                    extIndex++;
+                }
+                    
+            }
+            
+          
+             $("#intAcctGrid").empty().kendoGrid({
+                     dataSource: intDataSource,
+                     selectable: "multiple cell",                       
+                        sortable: true,                 
+                     columns: [
+                     {
+                         field: "Account_number",
+                         title: "Acct.#"                         
+                     },
+                     {    
+                         field: "Owner_name",
+                         title: "Owner Name"                         
+                     },
+                     {
+                         field: "Nature_of_acct",
+                         title: "Acct.Type"                         
+                     }
+                 ]
+            
+                 });
+            
+            $("#extAcctGrid").empty().kendoGrid({
+                     dataSource: extDataSource,
+                     selectable: "multiple cell",                       
+                        sortable: true,                 
+                     columns: [
+                     {
+                         field: "Account_number",
+                         title: "Acct.#"                         
+                     },
+                     {    
+                         field: "Owner_name",
+                         title: "Owner Name"                         
+                     },
+                     {
+                         field: "Nature_of_acct",
+                         title: "Acct.Type"
+                         
+                     }
+                 ]
+            
+                 });
+            
+            /*$("#grid").kendoGrid({
+                        dataSource: {
+                            transport: {
+                                read: {
+                                    url: "http://demos.kendoui.com/service/Products",
+                                    dataType: "jsonp"
+                                }
+                            },
+                            pageSize: 5
+                        },
+                     //   change: onChange,
+                     //   dataBound: onDataBound,
+                     //   dataBinding: onDataBinding,
+                        selectable: "multiple cell",
+                        pageable: true,
+                        sortable: true,
+                        scrollable: false,
+                        columns: [
+                            {
+                                field: "ProductName",
+                                title: "Product Name"
+                            },
+                            {
+                                field: "UnitPrice",
+                                title: "Unit Price",
+                                format: "{0:c}"
+                            },
+                            {
+                                field: "UnitsInStock",
+                                title: "Units In Stock"
+                            }
+                        ]
+                    });
+          */
+            
+                       
+            
+           /* debugger;
             var int_output = "";
             var ext_output = "";
-            $.each(data.d.BusinessObjects, function(key, val){
+            debugger;
+            $.each(data.BusinessObjects, function(key, val){
                 var acctNo = val.Account_number;                
                 var owner = val.Owner_name;                
                 var type = val.Nature_of_acct;                
@@ -170,11 +351,13 @@ function getHHMembers(hhId) {
                     ext_output+='<li>' + acctNo + "    " + owner + "   "  + type + "</li>";  
                     }
              });
+            alert("int_output="+ int_output);
+            alert("ext_output="+ ext_output);
             $('#intAccts').empty().append(int_output);
-            $('#extAccts').empty().append(ext_output);   
+            $('#extAccts').empty().append(ext_output);   */
         },
         error: function(data){
-            alert('failure:' + data.status + ':' + data.responseText);
+            alert('getHHAccountList failure:' + data.status + ':' + data.responseText);
             }
         });
  }
@@ -186,13 +369,13 @@ function getData(callback) {
             var dataSource = new kendo.data.DataSource({
                 transport: {
                     read: {
-                        url: 'http://r-sund2/ContactService/Service1.asmx/GetRecentContacts?instId=6083&brokerid=10408149',
+                        url: JSON.parse('http://r-sund2/ContactService/Service1.asmx/GetRecentContacts?instId=6083&brokerid=10408149'),
                         dataType: "jsonp" // JSONP (JSON with padding) is required for cross-domain AJAX
                     }
                 },
-              /* schema: {
-                    data: "ContactList.List"
-                },*/
+               schema: {
+                    data: "List"
+                },
                 error: function(e) {
                     console.log("Error " + e);
                 },
@@ -203,12 +386,13 @@ function getData(callback) {
             });
            // dataSource.sort = ({field: "Distance", dir: "asc"});
             dataSource.read();
-           // $("#contactlist").kendoMobileListView({dataSource:dataSource,template: $("#contact-list-template").html()});
+            $("#contactlist").kendoMobileListView({dataSource:dataSource,template: $("#contact-list-template").html()});
         }
  
         function onResult(resultData) {
+            var data = JSON.parse(resultData);
             alert("Results");
-            console.log("Results " + resultData);
-            $("#resultListView").kendoMobileListView({dataSource: kendo.data.DataSource.create({data:resultData,sort: { field: "Distance", dir: "asc" }}),
-                template: $("#customListViewTemplate").html()});
+            console.log("parsed Results " + data);
+            $("#contactlist").kendoMobileListView({dataSource: kendo.data.DataSource.create({data:data,sort: { field: "Distance", dir: "asc" }}),
+                template: $("#contact-list-template").html()});
         }
