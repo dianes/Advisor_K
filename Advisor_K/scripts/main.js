@@ -145,7 +145,7 @@ function getContactList() {
 
 
 function getHHSnapshot(e){
-  //  alert("getHHSnapshot");
+    alert("getHHSnapshot");
     var hhId = e.view.params.hhId;
     getHHMembers(hhId);
     getHHAccountList(hhId);
@@ -396,3 +396,118 @@ function getData(callback) {
             $("#contactlist").kendoMobileListView({dataSource: kendo.data.DataSource.create({data:data,sort: { field: "Distance", dir: "asc" }}),
                 template: $("#contact-list-template").html()});
         }
+
+
+//contact search
+function searchContact()
+{    
+    var instId=6083;
+    var bId=10408149;
+    var searchFor;
+    var searchBy;
+    var action;
+    var url, param;
+    var queryStr = "";
+    var cInputs = $("input:checked");
+    var txtLname = document.getElementById("txtLname").value;
+    var txtFname = document.getElementById("txtFname").value;
+    var txtCity = document.getElementById("txtCity").value;
+    var txtState = document.getElementById("txtState").value;
+    var txtZip = document.getElementById("txtCity").value;
+     
+    
+    if(cInputs != null){
+        for(var pvt=0;pvt<cInputs.length;pvt++){
+            if(cInputs[pvt].name=="srchFor"){
+                searchFor = cInputs[pvt].value;                
+            }
+            else if(cInputs[pvt].name =="srchBy"){
+                action = cInputs[pvt].value;
+                if(action == "srchByDemo"){
+                    queryStr = "<firstname>" + txtFname + "</firstname>";
+                    queryStr += "<lastname>" + txtLname + "</lastname>";
+                    queryStr += "<city>" + txtCity + "</city>";
+                    queryStr += "<state>" + txtState + "</state>";
+                    queryStr += "<zip>" + txtZip + "</zip>";
+
+                    param = '{InstID:' + instId + ', BrokerID:' + bId + ', SearchFor:"' + searchFor + 
+                        '", SearchQRY:"' + queryStr + '", page: 1, itemCount: 25, sortColumn: "Name", isAscending: true' +  '}'; 
+                    url = "http://r-sund2/ContactService/Service1.asmx/SearchByDemographic"; 
+                }
+                else if(action == "srchByAcctno"){
+                    //queryStr = "<acctno>" +
+                }
+                
+                
+            }
+        }
+        
+        $.ajax({ 
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: url,       
+        data: param,
+        dataType: "json",
+        success: function(dat){       
+           // alert("searchResult success");
+           // alert("contactSearchResultGrid.html="+$("#contactSearchResultGrid").html());
+          //  alert("length of contactSearchResultGrid.html="+ $("#contactSearchResultGrid").html().length);
+         //   if($("#contactSearchResultGrid").html().length>1100)
+             //  $("#tblDiv").empty();
+            $("#tblDiv .k-grid-header").remove();
+          debugger;
+           // alert("after empty contactSearchResultGrid.html="+$("#contactSearchResultGrid").html());
+            var data= JSON.parse(dat.d);
+        
+            $("#contactSearchResultGrid").empty().kendoGrid({
+                        dataSource: data.List,
+                       // pageable: true,
+                       // sortable: true,
+                        columns: [
+                     {
+                         
+                         title: "Name"                         
+                     },
+                     {    
+                         
+                         title: "Type"                         
+                     },
+                     {
+                         
+                         title: "Acct.#"                         
+                     },
+                      {
+                         
+                         title: "Phone"                         
+                     },
+                     {
+                         
+                         title: "City"                         
+                     },
+                    {
+                         
+                         title: "State"                         
+                     },
+                     {
+                         
+                         title: "Zip"                         
+                     }, 
+                    {
+                         
+                         title: "Action"                         
+                     },
+                 ],
+                        rowTemplate: kendo.template($("#contactSearchResultRowTemplate").html()),
+                        
+                        
+                    }).show();
+          //  $("#contactSearchResultGrid").show();
+            },
+        error: function(data){
+            alert('searchResult failure:' + data.status + ':' + data.responseText);
+            }
+        });     
+    }
+    
+    
+}

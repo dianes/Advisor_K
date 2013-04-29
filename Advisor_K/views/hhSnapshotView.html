@@ -1,17 +1,83 @@
-<div data-role="view" id="hhSnapshotView" data-title="Household Snapshot" data-align="left" >
+<!--<div data-role="view" id="hhSnapshotView" data-title="Household Snapshot" data-align="left" >
 	<header data-role="header">
 		<div data-role="navbar">
             <a data-role="backbutton" data-align="left">Back</a>
             <span data-role="view-title"></span>
 		</div>
 	</header>
-    <div id="hhSnapshotViewContent" data-role="content">
-		<!-- List of contacts -->
+    <div id="hhSnapshotViewContent" data-role="content">		
         <ul data-role="listview" data-style="inset" data-type="group">
             <li>
-                <!--<ul id="cardsList" data-role="listview" data-bind="source: cards" data-template="cardsListTemplate">
-                </ul>-->
+                
             </li>
         </ul>
+	</div>
+</div>-->
+
+
+<div data-role="view" id="hhView" data-title="Household Snapshot222" data-align="left" data-show="getHHSnapshot" >
+	<header data-role="header">
+		<div data-role="navbar">
+            <a data-role="backbutton" data-align="left" href="#recentContactsView">Back</a>
+            <span data-role="view-title"></span>
+		</div>
+	</header>
+    
+    <div id="hhSnapshotViewContent" data-role="content">
+        <!--<div id="grid"></div>-->
+        
+        <div>
+            <ul data-role="listview" data-style="inset" data-type="group">
+                <li>
+                    Household Members
+                    <ul data-role="listview" data-style="inset">
+                        <li>
+                            <div id="hhListGrid"></div>
+                        </li>
+                    </ul>
+                </li>
+         
+                <li>
+                    Accounts
+                    <ul data-role="listview" data-style="inset">  
+                        <li>
+                            <h3>Internal Accounts</h3>
+                            <div id="intAcctGrid"></div>                      
+                        </li>
+                        <li>
+                             <h3>External Accounts</h3>                             
+                             <div id="extAcctGrid"></div>
+                        </li>
+                    </ul>
+                    
+                 </li>
+            </ul>
+        </div>
+        
+        
+        <!--<div>
+            <ul data-role="listview" data-style="inset" data-type="group">
+                <li>
+                    Household Members
+                    <ul data-role="listview" id="hhlist" data-style="inset"></ul>
+                </li>
+         
+                <li>
+                    Accounts
+                    <ul data-role="listview" data-style="inset">  
+                        <li>
+                            <h3>Internal Accounts</h3>
+                            <ul data-role="listview" id="intAccts"></ul>                          
+                        </li>
+                        <li>
+                             <h3>External Accounts</h3>                             
+                             <ul data-role="listview" id="extAccts"></ul>
+                        </li>
+                    </ul>
+                    
+                 </li>
+            </ul>
+        </div>-->
+        
 	</div>
 </div>

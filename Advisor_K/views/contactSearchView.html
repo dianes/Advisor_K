@@ -9,38 +9,86 @@
         <div id="contactSearchCriteria">
             <p>
                 <label style="display: inline-block;">Search For:</label>
-                <input type="radio" value="client"   name="srchFor" checked />Client
-                <input type="radio" value="prospect" name="srchFor"  />Prospect
+                <input type="radio" id="selClient" value="client"   name="srchFor" checked />Client
+                <input type="radio" id="selProspect" value="prospect" name="srchFor"  />Prospect
             </p>
             <p>
-                <label style="display: inline-block;">Search By:</label><br/>
-                <input type="radio" value="srchByDemo"   name="srchBy" checked />Demographic Information<br/>
-                <input type="radio" value="srchByAcctno" name="srchBy"  />Account #<br/>
-                <input type="radio" value="srchByRepCode" name="srchBy"  />Rep Code
+                <label style="display: inline-block;">Search By:</label>
+                <input type="radio" id="selDemo" value="srchByDemo"   name="srchBy" checked />Demographic Information
+                <input type="radio" id="selAcct" value="srchByAcctno" name="srchBy"  />Account #
+                <input type="radio" id="selRepCode" value="srchByRepCode" name="srchBy"  />Rep Code
             </p>
             <p>
                 <label for="txtLname" style="display: inline-block;">Last Name:</label>
-                <input type="text" id="txtLname" value="" /><br/>
+                <input type="text" id="txtLname" value="" />
                 <label for="txtFname" style="display: inline-block;">First Name:</label>
                 <input type="text" id="txtFname" value="" /><br/>           
                 <label for="txtCity" style="display: inline-block;">City:</label>
-                <input type="text" id="txtCity" value="" /><br/>
+                <input type="text" id="txtCity" value="" />
                 <label for="txtState" style="display: inline-block;">State:</label>
-                <input type="text" id="txtState" value="" /><br/>
+                <input type="text" id="txtState" value="" />
                 <label for="txtZip" style="display: inline-block;">Zip:</label>
-                <input type="text" id="txtZip" value="" /><br/>
-            </p>
-            <p> <div class="buttonArea">            
-                    <a id="btnSearch" data-role="button" data-click="sayHello">Search</a>
-                </div>
-            </p>
+                <input type="text" id="txtZip" value="" />
+                <a id="btnSearch" data-role="button" data-click="searchContact">Search</a>
+                 
+            </p>            
         </div>
-		<!-- List of contacts -->
-        <ul data-role="listview" data-style="inset" data-type="group">
-            <li>
-                <!--<ul id="cardsList" data-role="listview" data-bind="source: cards" data-template="cardsListTemplate">
-                </ul>-->
-            </li>
-        </ul>
+	        
+        <div id="tblDiv">
+            <table id="contactSearchResultGrid" style="display:none" >              
+                <!--<thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Acct.#
+                        </th>
+                        <th>
+                            Phone
+                        </th>
+                        <th>
+                            City
+                        </th>                       
+                        <th>
+                            State
+                        </th>
+                        <th>
+                            Zip
+                        </th>                        
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>-->
+                <tbody id="contactSearchResultBody">
+                    <!--<tr>
+                        <td colspan="8"></td>
+                    </tr>-->
+                </tbody>
+            </table>    
+         </div>
+        
+        <script id="contactSearchResultRowTemplate" type="text/x-kendo-template">
+            <tr>            
+                <td><a href="\#hhSnapshotView?hhId=#: hh_id #">#: lname #, #: fname #</a></td>  
+                <td>#: type #</td>
+                #if(acct_no == ""){# 
+                    <td>NA</td> 
+                #}else{# 
+                    <td>#: acct_no#</td>
+                #}#                
+                <td>#: phone #</td>
+                <td>#: city #</td>
+                <td>#: state #</td>
+                <td>#: zip #</td>                
+                <td></td>
+                
+           </tr>
+        </script>
+        
 	</div>
 </div>
