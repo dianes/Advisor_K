@@ -83,7 +83,7 @@
       <TargetName>cordova.js</TargetName>
     </Content>
     <Content Include="views\contactSearchView.html" />
-    <Content Include="views\hhSnapshotView.html" />
+    <Content Include="views\hhProfileView.html" />
     <Content Include="views\modelSearchView.html" />
     <Content Include="views\recentContactsView.html" />
     <Content Include="views\recentModelsView.html" />

@@ -145,7 +145,7 @@ function getContactList() {
 
 
 function getHHSnapshot(e){
-    alert("getHHSnapshot");
+   // alert("getHHSnapshot");
     var hhId = e.view.params.hhId;
     getHHMembers(hhId);
     getHHAccountList(hhId);
@@ -455,41 +455,42 @@ function searchContact()
          //   if($("#contactSearchResultGrid").html().length>1100)
              //  $("#tblDiv").empty();
             $("#tblDiv .k-grid-header").remove();
-          debugger;
+         // debugger;
            // alert("after empty contactSearchResultGrid.html="+$("#contactSearchResultGrid").html());
             var data= JSON.parse(dat.d);
         
             $("#contactSearchResultGrid").empty().kendoGrid({
                         dataSource: data.List,
                        // pageable: true,
-                       // sortable: true,
+                        selectable: "multiple cell",
+                        sortable: true,
                         columns: [
                      {
-                         
+                         field: "lname",
                          title: "Name"                         
                      },
                      {    
-                         
+                         field: "type",
                          title: "Type"                         
                      },
                      {
-                         
+                         field: "acct_no",
                          title: "Acct.#"                         
                      },
                       {
-                         
+                         field: "phone",
                          title: "Phone"                         
                      },
                      {
-                         
+                         field: "city",
                          title: "City"                         
                      },
                     {
-                         
+                         field: "state",
                          title: "State"                         
                      },
                      {
-                         
+                         field: "zip",
                          title: "Zip"                         
                      }, 
                     {
@@ -501,13 +502,149 @@ function searchContact()
                         
                         
                     }).show();
-          //  $("#contactSearchResultGrid").show();
+          
             },
         error: function(data){
             alert('searchResult failure:' + data.status + ':' + data.responseText);
             }
         });     
-    }
+    } 
+}
+
+
+function getHHProfile(e)
+{
+    var hhId = e.view.params.hhId;
+    getContactsInfo(hhId);
+    getAccountsInfo(hhId);
+}
+
+
+function getContactsInfo(hhId)    
+{     
+    //var hhId = e.view.params.hhId;
+    var instId=6083;
+    var bId=10408149; 
+    var param = '{InstID:' + instId + ', BrokerID:' + bId + ', propId: 0, partyId:' + hhId + '}';  
+    $.ajax({ 
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://r-sund2/ContactService/Service1.asmx/GetContactDetails",
+       // data: "{'InstID': 6083, 'BrokerID': 10408149}",
+        data: param,
+        dataType: "json",
+        success: function(dat){
+           // debugger;
+            var data= JSON.parse(dat.d);
     
+            var scriptTemplate = kendo.template($("#contactDetailTemplate").html());
+         /*   if(data.List.length > 0){           
+                    additionalcontact = data.List[1].fname + " " + data.List[1].lname;
+                    scriptTemplate = scriptTemplate(additionalcontact);
+                }*/
+            
+            $("#hhProfileListGrid").html(scriptTemplate(data.List[0]));
+            
+            },
+        error: function(data){
+            alert('failure:' + data.status + ':' + data.responseText);
+            }
+        });  
+}
+
+
+function getAccountsInfo(hhId)
+{
+    var param = '{planId: 0, householdId:' + hhId + '}'; 
+    $.ajax({ 
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://r-sund2/ContactService/Service1.asmx/GetAccountHHSnapshot",       
+        data: param,
+        dataType: "json",
+        success: function(dat){
+           // debugger;
+           // alert("success");
+            var data= JSON.parse(dat.d);
     
+           // var scriptTemplate = kendo.template($("#contactDetailTemplate").html());
+                  
+           // $("#hhProfileListGrid").html(scriptTemplate(data.List[0]));
+            
+                $("#hhAccountInfo").empty().kendoGrid({
+                                dataSource: {data: data.HHAcctInfoList.List,
+                                 group: {
+                                     field:"InternalValue", 
+                                     dir:"desc",
+                                     aggregates:[
+                                             { field:"MarketValue",aggregate:"sum"}
+                                     ]
+                                 }
+                    },
+                                
+                    columns: [
+                        {
+                            field: "AccountNumber",
+                            title: "Acct.#"
+                        },
+                        {
+                            field: "AccountName",
+                            title: "Account Name"
+                        },
+                        {
+                            field: "OwnerName",
+                            title: "Owner"
+                        },
+                        {
+                            field: "NatureOfAccount",
+                            title: "Acct. Type"
+                        },
+                        {
+                            field: "DiscretionaryType",
+                            title: "Discretion"
+                        },
+                        {
+                            field: "ProgramName",
+                            title: "Product Class",
+                            groupFooterTemplate:"Total Value:",
+                            footerTemplate: "Total Value:"
+                        },
+                        {
+                            field: "MarketValue",
+                            title: "MV*",
+                            groupFooterTemplate: "#= sum #",
+                          //  footerTemplate:"#:total #"
+                        },
+                        {
+                            field: "RebalanceStatus",
+                            title: "Rebal Status"
+                        }, 
+                        {
+                            title: "Actions"
+                        },
+                        {
+                            hidden: true, 
+                            field: "InternalValue",
+                            groupHeaderTemplate: "#getGroupHeader(value)#"
+                          //  groupHeaderTemplate: "#if(value=='Y') {value='Internal Account';} else {value='External Account';} alert('value='+value);#"
+                        }
+                   
+                    ],
+                });
+            },
+        error: function(data){
+            alert('failure:' + data.status + ':' + data.responseText);
+            }
+        });  
+}
+
+function getGroupHeader(value)
+{//debugger;
+   // alert("getGrouopHeader");
+   // alert("value="+value);
+    if(value=="Y")
+        return "Internal Accounts";
+    else
+        return "External Accounts";
+    return value;
 }
