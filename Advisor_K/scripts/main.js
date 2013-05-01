@@ -1,3 +1,4 @@
+var g_hhAcctListGrpFooter;
 
 function getContactListGrid()
 {
@@ -14,26 +15,7 @@ function getContactListGrid()
         dataType: "json",
         success: function(dat){       
           //  alert("contactlistgrid success");
-            var data= JSON.parse(dat.d);
-          //         alert("data="+data);    
-       /*     alert('success data.d:' + data.d.List);
-            var datasrc = data.d.List;
-            
-            $("#contactlist").kendoMobileListView({
-			dataSource: data.d.List,
-			template: $("#contact-list-template").html(),
-            style: "inset"               
-             
-		});*/            
-        
-            
-           /* $.each(data.List, function(key, val){
-                var str = val.lname + "," + val.fname;              
-                var hhId = val.hh_id;                
-                var style= 'class="km-listview-link" data-role="listview-link"';               
-                $('<li><a href="\#hhSnapshotView?hhId='+ hhId + '"' + style + '>' + str + '</a></li>')
-                    .appendTo($('#contactlist')); 
-            }); */
+            var data= JSON.parse(dat.d);          
         
             $("#contactListGrid").kendoGrid({
                         dataSource: data.List,
@@ -51,35 +33,13 @@ function getContactListGrid()
     
 }
 
-function getContactListsss(){
-    alert("getcontact");
-    /*$.getJSON("http://r-sund2/ContactService/Service1.asmx/GetRecentContacts?instId=6083&brokerid=10408149", 
-        function(data){
-            alert("data="+data);
-            debugger;
-            $.each(data, function(key, val){
-                
-               //  var str = val.lname + "," + val.fname;
-                
-            });
-        });*/
-    $.getJSON("http://r-sund2/ContactService/Service1.asmx/GetRecentContacts?instId=6083&brokerid=10408149")
-    .done(function(data){
-        alert("success data="+ data);
-    })
-    .fail(function(jqxhr, textStatus, error){
-        var err =textStatus + ' ' + error;
-        alert("error:" + err);
-    });
-}
 
 function getContactList() { 
    
     var instId=6083;
     var bId=10408149;    
     var param = '{InstID:' + instId + ', BrokerID:' + bId + '}';    
-  //  alert("param="+JSON.stringify(param));  
-    
+      
     $.ajax({ 
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -129,19 +89,7 @@ function getContactList() {
             }
         });  
         
-    }
-
-    /*function(data) { 
-        console.log("data: " + data);
-        debugger;
-		$("#subreddit-data").kendoMobileListView({
-			dataSource: data.data.children,
-			template: $("#subreddit-data-template").html(),
-            style: "inset"
-		});
-    });*/
-
-
+ }
 
 
 function getHHSnapshot(e){
@@ -160,8 +108,7 @@ function getHHMembers(hhId) {
     var bId=10408149;
     var modId = 120;
     var param = '{InstID:' + instId + ', BrokerID:' + bId + ', ModuleID:' + modId + ', HHID:' + hhId + '}';  
-   // alert("getHHMembers param=" + param);
-    
+       
     $.ajax({ 
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -216,7 +163,6 @@ function getHHMembers(hhId) {
     var bId=10408149;
     var modId = 120;
     var param = '{InstID:' + instId + ', BrokerID:' + bId + ', ModuleID:' + modId + ', HHID:' + hhId + '}';  
-   // alert("getHHAccountList param=" + param);
      
      $.ajax({ 
         type: "POST",
@@ -331,30 +277,7 @@ function getHHMembers(hhId) {
                         ]
                     });
           */
-            
-                       
-            
-           /* debugger;
-            var int_output = "";
-            var ext_output = "";
-            debugger;
-            $.each(data.BusinessObjects, function(key, val){
-                var acctNo = val.Account_number;                
-                var owner = val.Owner_name;                
-                var type = val.Nature_of_acct;                
-                var isInternal = val.InternalValue;
                 
-                if(isInternal==true){
-                    int_output+='<li>' + acctNo + "    " + owner + "   "  + type + "</li>";                    
-                    }
-                else{
-                    ext_output+='<li>' + acctNo + "    " + owner + "   "  + type + "</li>";  
-                    }
-             });
-            alert("int_output="+ int_output);
-            alert("ext_output="+ ext_output);
-            $('#intAccts').empty().append(int_output);
-            $('#extAccts').empty().append(ext_output);   */
         },
         error: function(data){
             alert('getHHAccountList failure:' + data.status + ':' + data.responseText);
@@ -395,7 +318,7 @@ function getData(callback) {
             console.log("parsed Results " + data);
             $("#contactlist").kendoMobileListView({dataSource: kendo.data.DataSource.create({data:data,sort: { field: "Distance", dir: "asc" }}),
                 template: $("#contact-list-template").html()});
-        }
+}
 
 
 //contact search
@@ -415,7 +338,7 @@ function searchContact()
     var txtState = document.getElementById("txtState").value;
     var txtZip = document.getElementById("txtCity").value;
      
-    
+    $("#contactSearchResultGrid").empty();
     if(cInputs != null){
         for(var pvt=0;pvt<cInputs.length;pvt++){
             if(cInputs[pvt].name=="srchFor"){
@@ -448,18 +371,11 @@ function searchContact()
         url: url,       
         data: param,
         dataType: "json",
-        success: function(dat){       
-           // alert("searchResult success");
-           // alert("contactSearchResultGrid.html="+$("#contactSearchResultGrid").html());
-          //  alert("length of contactSearchResultGrid.html="+ $("#contactSearchResultGrid").html().length);
-         //   if($("#contactSearchResultGrid").html().length>1100)
-             //  $("#tblDiv").empty();
-            $("#tblDiv .k-grid-header").remove();
-         // debugger;
-           // alert("after empty contactSearchResultGrid.html="+$("#contactSearchResultGrid").html());
+        success: function(dat){
+            $("#tblDiv .k-grid-header").remove();         
             var data= JSON.parse(dat.d);
         
-            $("#contactSearchResultGrid").empty().kendoGrid({
+            $("#contactSearchResultGrid").kendoGrid({
                         dataSource: data.List,
                        // pageable: true,
                         selectable: "multiple cell",
@@ -515,13 +431,16 @@ function searchContact()
 function getHHProfile(e)
 {
     var hhId = e.view.params.hhId;
-    getContactsInfo(hhId);
     getAccountsInfo(hhId);
+    getContactsInfo(hhId);
+    
 }
 
 
 function getContactsInfo(hhId)    
 {     
+  //  alert("getContactsInfo");
+    $("#hhProfileListGrid").empty();
     //var hhId = e.view.params.hhId;
     var instId=6083;
     var bId=10408149; 
@@ -555,6 +474,8 @@ function getContactsInfo(hhId)
 
 function getAccountsInfo(hhId)
 {
+  //  alert("getAccountsInfo");
+    $("#hhAccountInfo").empty();
     var param = '{planId: 0, householdId:' + hhId + '}'; 
     $.ajax({ 
         type: "POST",
@@ -562,16 +483,10 @@ function getAccountsInfo(hhId)
         url: "http://r-sund2/ContactService/Service1.asmx/GetAccountHHSnapshot",       
         data: param,
         dataType: "json",
-        success: function(dat){
-           // debugger;
-           // alert("success");
+        success: function(dat){          
             var data= JSON.parse(dat.d);
     
-           // var scriptTemplate = kendo.template($("#contactDetailTemplate").html());
-                  
-           // $("#hhProfileListGrid").html(scriptTemplate(data.List[0]));
-            
-                $("#hhAccountInfo").empty().kendoGrid({
+            $("#hhAccountInfo").kendoGrid({
                                 dataSource: {data: data.HHAcctInfoList.List,
                                  group: {
                                      field:"InternalValue", 
@@ -580,8 +495,7 @@ function getAccountsInfo(hhId)
                                              { field:"MarketValue",aggregate:"sum"}
                                      ]
                                  }
-                    },
-                                
+                    },                                
                     columns: [
                         {
                             field: "AccountNumber",
@@ -600,20 +514,22 @@ function getAccountsInfo(hhId)
                             title: "Acct. Type"
                         },
                         {
-                            field: "DiscretionaryType",
-                            title: "Discretion"
+                            field: "DiscretionaryType", values: [{text: "Non-Discretionary", value: "n"},
+                                                                 {text: "Discretionary", value:"y"}],
+                            title: "Discretion"                           
                         },
                         {
                             field: "ProgramName",
                             title: "Product Class",
-                            groupFooterTemplate:"Total Value:",
+                            groupFooterTemplate:"#= g_hhAcctListGrpFooter #",
                             footerTemplate: "Total Value:"
                         },
                         {
                             field: "MarketValue",
                             title: "MV*",
-                            groupFooterTemplate: "#= sum #",
-                          //  footerTemplate:"#:total #"
+                            groupFooterTemplate: "#= kendo.toString(sum,'c') #",
+                            footerTemplate:"#= getTotal() #",
+                            format: "{0:c}"
                         },
                         {
                             field: "RebalanceStatus",
@@ -625,10 +541,8 @@ function getAccountsInfo(hhId)
                         {
                             hidden: true, 
                             field: "InternalValue",
-                            groupHeaderTemplate: "#getGroupHeader(value)#"
-                          //  groupHeaderTemplate: "#if(value=='Y') {value='Internal Account';} else {value='External Account';} alert('value='+value);#"
-                        }
-                   
+                            groupHeaderTemplate: "#= getGroupHeader(value) #"                          
+                        }                   
                     ],
                 });
             },
@@ -639,12 +553,33 @@ function getAccountsInfo(hhId)
 }
 
 function getGroupHeader(value)
-{//debugger;
-   // alert("getGrouopHeader");
-   // alert("value="+value);
-    if(value=="Y")
-        return "Internal Accounts";
-    else
+{ 
+    /*******************************************************************************************
+      groupFooterTemplate doesn't contain info about "group by" field and value. 
+      As a workaround, suggested by Telerik team, retrieve this info through groupHeaderTemplate
+      (groupHeaderTemplate is executed before groupFooterTemplate).  
+      Note here g_hhAcctListGrpFooter is a global variable 
+    ********************************************************************************************/
+    if(value=="Y"){
+        g_hhAcctListGrpFooter = "Internal Total:";
+        return "Internal Accounts";        
+    }
+    else{
+        g_hhAcctListGrpFooter = "External Total:";
         return "External Accounts";
-    return value;
+    }
 }
+
+function getTotal()
+{    
+    var dataSource = $("#hhAccountInfo").data("kendoGrid").dataSource;
+    var result = 0;
+
+    //loops through dataSource view
+    $(dataSource.view()).each(function(index,element){
+        result += element.aggregates.MarketValue.sum;
+    });
+    return kendo.toString(result, 'C');
+}
+
+     
