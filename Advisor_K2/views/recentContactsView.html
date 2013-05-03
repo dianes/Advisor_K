@@ -1,4 +1,4 @@
-<div data-role="view" id="recentContactsView" data-title="Recent Contacts" data-init="getContactListGrid">
+<div data-role="view" id="recentContactsView" data-title="Recent Contacts" data-init="getContactList">
 	<header data-role="header">
 		<div data-role="navbar">
             <a id="btnContactSearch" data-role="button" href="views/contactSearchView.html" 
@@ -6,9 +6,9 @@
             <span data-role="view-title"></span>
 		</div>
 	</header>
-    <div id="recentcontactViewContent" data-role="content">		
-           <!--<ul data-role="listview" id="contactlist" data-style="inset" ></ul>   -->       
-         <!--<div id="grid"></div>-->
+    <!--<div id="recentcontactViewContent" data-role="content">	-->	
+          <ul id="contactlist" data-role="listview" data-style="inset"></ul>        
+        <!-- <div id="grid"></div>
             <table id="contactListGrid">              
                 <thead id="contactListHdr">
                     <tr>
@@ -43,12 +43,12 @@
                         <td colspan="8"></td>
                     </tr>
                 </tbody>
-            </table>       
+            </table>    -->   
             
     </div>    
- </div>
+ <!--</div>-->
 
-<script id="contactListRowTemplate" type="text/x-kendo-template">
+<!--<script id="contactListRowTemplate" type="text/x-kendo-template">
         <tr>            
                <td><a href="\#hhSnapshotView?hhId=#: hh_id #">#: lname #, #: fname #</a></td>         
                 <td>#: type #</td>
@@ -83,7 +83,18 @@
                 </td>
                 
        </tr>
-</script>
+</script>-->
+
+ <script type="text/x-kendo-template" id="recentcontact-listview-template">
+            <a href="\#hhSnapshotView?hhId=${hh_id}" style="text-decoration:none;">${lname}, ${fname} </a> 
+            <p class="contact-type">${type}</p>
+            <a href="views/hhProfileView.html?hhId=${hh_id}" data-role="button" data-icon="details" class="details-link" onclick="contactdetailclick(${hh_id});"></a>
+ </script>
+
+ <script type="text/x-kendo-template" id="recentcontact-listview-template2">
+            <a href="\#hhSnapshotView?hhId=${hh_id}" onclick="contactnameclick(${hh_id});">${lname}, ${fname} </a> 
+            
+ </script>
    
  
 
@@ -134,6 +145,18 @@
             <!--<a href="\#hhSnapshotView?hhId=\#= myName \#"> \#= myName </a>-->
             <a data-role="detailbutton" data-style="rowdelete" data-click="removeSubReddit" data-id="${id}" class="delete"></a>
     </script>
+
+
+
+
+
+
+
+
+/*****************************/
+
+
+
 
     
 

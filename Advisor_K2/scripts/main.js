@@ -35,7 +35,7 @@ function getContactListGrid()
 
 
 function getContactList() { 
-   
+   alert("getContactList");
     var instId=6083;
     var bId=10408149;    
     var param = '{InstID:' + instId + ', BrokerID:' + bId + '}';    
@@ -51,27 +51,39 @@ function getContactList() {
          //   debugger;
             var data= JSON.parse(dat.d);
           //         alert("data="+data);    
-       /*     alert('success data.d:' + data.d.List);
-            var datasrc = data.d.List;
+          //  alert('success data.d:' + data.List);
             
-            $("#contactlist").kendoMobileListView({
-			dataSource: data.d.List,
-			template: $("#contact-list-template").html(),
-            style: "inset"               
+            
+           $("#contactlist").kendoMobileListView({
+			dataSource: data.List,
+			template: $("#recentcontact-listview-template").html(),
+            style: "inset"            
              
-		});*/            
+		});          
         
             
             $.each(data.List, function(key, val){
                 var str = val.lname + "," + val.fname;
-              //  alert("str=" + str);
+              
                 var hhId = val.hh_id;                
                 var style= 'class="km-listview-link" data-role="listview-link"';
-               // $('<li/>', {text: str}).appendTo($('#contactlist')); 
-               /* $('<a href="views/hhSnapshotView.html?hhId='+ hhId + '">' + str + '</a><br/><br/>')
-                    .appendTo($('#contactlist')); */
+                var style1 = 'style=font-size:14px';
+                var style2 = 'class="km-listview-link" data-role="listview-link" style=font-size:40px;margin-left:10px';
+               
+                /*$('<a href="\#hhSnapshotView?hhId='+ hhId + '">' + str + '</a><br/><br/>')
+                    .appendTo($('#contactlist'));*/
+                
+                /* clickable, small fond */
+                /*$('<a href="\#hhSnapshotView?hhId='+ hhId + '"' + style + '>'  + str + '</a><br/><br/>')
+                    .appendTo($('#contactlist'));*/
+                
+               /* cllickable */
+               /* $('<a href="\#hhSnapshotView?hhId='+ hhId + '"' + style2 + '>'  + str + '</a><a href="http://www.google.com">button</a><br/><br/>')
+                    .appendTo($('#contactlist'));*/
+                
+               /* not clickable
                 $('<li><a href="\#hhSnapshotView?hhId='+ hhId + '"' + style + '>' + str + '</a></li>')
-                    .appendTo($('#contactlist')); 
+                    .appendTo($('#contactlist')); */
             });
             
              /* var output='';
@@ -93,7 +105,7 @@ function getContactList() {
 
 
 function getHHSnapshot(e){
-   // alert("getHHSnapshot");
+    alert("getHHSnapshot");
     var hhId = e.view.params.hhId;
     getHHMembers(hhId);
     getHHAccountList(hhId);
@@ -322,7 +334,7 @@ function getData(callback) {
 
 
 //contact search
-function searchContact()
+function searchContactold()
 {    
     var instId=6083;
     var bId=10408149;
@@ -427,10 +439,102 @@ function searchContact()
     } 
 }
 
+function searchContact()
+{    
+    alert("searchContact");
+    var instId=6083;
+    var bId=10408149;
+    var searchFor="client"   
+    var url, param;
+    var queryStr = "";    
+    var txtLname = document.getElementById("txtLname").value;    
+     
+    $("#contactSearchResultGrid").empty();
+    
+      queryStr="<firstname></firstname><lastname>" + txtLname + "</lastname><city></city><state></state><zip></zip>";
+
+    
+    alert("querystr="+ queryStr);
+      param = '{InstID:' + instId + ', BrokerID:' + bId + ', SearchFor:"' + searchFor + 
+                        '", SearchQRY:"' + queryStr + '", page: 1, itemCount: 25, sortColumn: "Name", isAscending: true' +  '}'; 
+                    url = "http://r-sund2/ContactService/Service1.asmx/SearchByDemographic"; 
+       
+        
+        $.ajax({ 
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: url,       
+        data: param,
+        dataType: "json",
+        success: function(dat){
+            alert("contactSearch success");
+            $("#tblDiv .k-grid-header").remove();         
+            var data= JSON.parse(dat.d);
+            
+            $("#contactsearchlist").kendoMobileListView({
+			dataSource: data.List,
+			template: $("#contactsearch-listview-template").html(),
+            style: "inset"            
+             
+		}).show();          
+        
+          /*  $("#contactSearchResultGrid").kendoGrid({
+                        dataSource: data.List,                       
+                        selectable: "multiple cell",
+                        sortable: true,
+                        columns: [
+                     {
+                         field: "lname",
+                         title: "Name"                         
+                     },
+                     {    
+                         field: "type",
+                         title: "Type"                         
+                     },
+                     {
+                         field: "acct_no",
+                         title: "Acct.#"                         
+                     },
+                      {
+                         field: "phone",
+                         title: "Phone"                         
+                     },
+                     {
+                         field: "city",
+                         title: "City"                         
+                     },
+                    {
+                         field: "state",
+                         title: "State"                         
+                     },
+                     {
+                         field: "zip",
+                         title: "Zip"                         
+                     }, 
+                    {
+                         
+                         title: "Action"                         
+                     },
+                 ],
+                        rowTemplate: kendo.template($("#contactSearchResultRowTemplate").html()),
+                        
+                        
+                    }).show();*/
+          
+            },
+        error: function(data){
+            alert('searchResult failure:' + data.status + ':' + data.responseText);
+            }
+        });     
+    } 
+
+
 
 function getHHProfile(e)
 {
     var hhId = e.view.params.hhId;
+    debugger;
+    alert("getProfile,hhId= " + hhId);
     getAccountsInfo(hhId);
     getContactsInfo(hhId);
     
@@ -439,7 +543,7 @@ function getHHProfile(e)
 
 function getContactsInfo(hhId)    
 {     
-  //  alert("getContactsInfo");
+    alert("getContactsInfo");
     $("#hhProfileListGrid").empty();
     //var hhId = e.view.params.hhId;
     var instId=6083;
@@ -474,7 +578,7 @@ function getContactsInfo(hhId)
 
 function getAccountsInfo(hhId)
 {
-  //  alert("getAccountsInfo");
+    alert("getAccountsInfo");
     $("#hhAccountInfo").empty();
     var param = '{planId: 0, householdId:' + hhId + '}'; 
     $.ajax({ 
@@ -505,19 +609,19 @@ function getAccountsInfo(hhId)
                             field: "AccountName",
                             title: "Account Name"
                         },
-                        {
+                      /*  {
                             field: "OwnerName",
                             title: "Owner"
-                        },
+                        },*/
                         {
                             field: "NatureOfAccount",
                             title: "Acct. Type"
                         },
-                        {
+                       /* {
                             field: "DiscretionaryType", values: [{text: "Non-Discretionary", value: "n"},
                                                                  {text: "Discretionary", value:"y"}],
                             title: "Discretion"                           
-                        },
+                        },*/
                         {
                             field: "ProgramName",
                             title: "Product Class",
@@ -531,13 +635,13 @@ function getAccountsInfo(hhId)
                             footerTemplate:"#= getTotal() #",
                             format: "{0:c}"
                         },
-                        {
+                       /* {
                             field: "RebalanceStatus",
                             title: "Rebal Status"
                         }, 
                         {
                             title: "Actions"
-                        },
+                        },*/
                         {
                             hidden: true, 
                             field: "InternalValue",
@@ -580,6 +684,21 @@ function getTotal()
         result += element.aggregates.MarketValue.sum;
     });
     return kendo.toString(result, 'C');
+}
+
+function contactnameclick(hhid){
+    alert("contactnameclick=" + hhid);
+    //document.location.href="#hhSnapshotView?hhId=" + hhid;
+    
+    //document.location.href="views/hhProfileView.html?hhId=" + hhid;
+    document.location.href="#hhProfileView?hhId=" + hhid;
+    return true;
+}
+
+function contactdetailclick(hhid){
+    alert("contactdetailclick=" + hhid);
+    document.location.href="#hhProfileView?hhId=" + hhid;
+    return true;
 }
 
      
